@@ -25,18 +25,18 @@ import Foundation
 
 /// Playlist source.
 public protocol PlaylistSource {
-  /// Playlist contents raw string.
-  var rawString: String? { get }
+    /// Playlist contents raw string.
+    var rawString: String? { get }
 }
 
 extension String: PlaylistSource {
-  public var rawString: String? {
-    return self
-  }
+    public var rawString: String? {
+        return self.replacingOccurrences(of: "\n", with: "")
+    }
 }
 
 extension URL: PlaylistSource {
-  public var rawString: String? {
-    return try? String(contentsOf: self, encoding: .utf8)
-  }
+    public var rawString: String? {
+        return try? String(contentsOf: self, encoding: .utf8)
+    }
 }
