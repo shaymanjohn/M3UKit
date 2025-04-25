@@ -31,7 +31,7 @@ public protocol PlaylistSource {
 
 extension String: PlaylistSource {
     public var rawString: String? {
-        return self.replacingOccurrences(of: "\n", with: "")
+        return self
     }
 }
 

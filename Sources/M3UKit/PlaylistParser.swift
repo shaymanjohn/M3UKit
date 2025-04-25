@@ -200,11 +200,12 @@ public final class PlaylistParser {
     
     internal func extractRawString(from input: PlaylistSource) throws -> String {
         let filePrefix = "#EXTM3U"
+        let filePrefixLineFeed = "\n#EXTM3U"
         
         guard var rawString = input.rawString else {
             throw ParsingError.invalidSource
         }
-        guard rawString.starts(with: filePrefix) else {
+        guard rawString.starts(with: filePrefix) || rawString.starts(with: filePrefixLineFeed) else {
             throw ParsingError.invalidSource
         }
         rawString.removeFirst(filePrefix.count)
