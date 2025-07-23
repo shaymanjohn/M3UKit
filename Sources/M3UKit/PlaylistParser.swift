@@ -75,24 +75,26 @@ public final class PlaylistParser {
                 return
             }
             
-            if self.isInfoLine(line) {
-                lastMetadataLine = line
-            } else if self.isSessionLine(line) {
-                lineNumber += 1
-            } else if let url = URL(string: line) {
-                lastURL = url
-            }
-            
-            if let metadataLine = lastMetadataLine, let url = lastURL {
-                do {
-                    let metadata = try self.parseMetadata(line: lineNumber, rawString: metadataLine, url: url)
-                    let kind = self.parseMediaKind(url)
-                    medias.append(.init(metadata: metadata, kind: kind, url: url))
-                    lastMetadataLine = nil
-                    lastURL = nil
-                } catch {
-                    mediaMetadataParsingError = error
-                    stop = true
+            if !self.isGroupLine(line) {
+                if self.isInfoLine(line) {
+                    lastMetadataLine = line
+                } else if self.isSessionLine(line) {
+                    lineNumber += 1
+                } else if let url = URL(string: line) {
+                    lastURL = url
+                }
+                
+                if let metadataLine = lastMetadataLine, let url = lastURL {
+                    do {
+                        let metadata = try self.parseMetadata(line: lineNumber, rawString: metadataLine, url: url)
+                        let kind = self.parseMediaKind(url)
+                        medias.append(.init(metadata: metadata, kind: kind, url: url))
+                        lastMetadataLine = nil
+                        lastURL = nil
+                    } catch {
+                        mediaMetadataParsingError = error
+                        stop = true
+                    }
                 }
             }
             
@@ -237,6 +239,10 @@ public final class PlaylistParser {
     
     internal func isInfoLine(_ input: String) -> Bool {
         return input.starts(with: "#EXTINF:")
+    }
+    
+    internal func isGroupLine(_ input: String) -> Bool {
+        return input.starts(with: "#EXTGRP:")
     }
     
     internal func isSessionLine(_ input: String) -> Bool {
