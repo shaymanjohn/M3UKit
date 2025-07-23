@@ -75,7 +75,7 @@ public final class PlaylistParser {
                 return
             }
             
-            if !self.isGroupLine(line) {
+            if !self.isIgnorableLine(line) {
                 if self.isInfoLine(line) {
                     lastMetadataLine = line
                 } else if self.isSessionLine(line) {
@@ -241,8 +241,14 @@ public final class PlaylistParser {
         return input.starts(with: "#EXTINF:")
     }
     
-    internal func isGroupLine(_ input: String) -> Bool {
-        return input.starts(with: "#EXTGRP:")
+    internal func isIgnorableLine(_ input: String) -> Bool {
+        let ignoreList = ["EXTGRP:"]
+        for line in ignoreList {
+            if input.starts(with: line) {
+                return true
+            }
+        }
+        return false
     }
     
     internal func isSessionLine(_ input: String) -> Bool {
