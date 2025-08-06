@@ -242,9 +242,9 @@ public final class PlaylistParser {
     }
     
     internal func isIgnorableLine(_ input: String) -> Bool {
-        let ignoreList = ["xxx#EXTGRP:", "#EXTVLCOPT:"]
+        let ignoreList = ["#EXTGRP:", "#EXTVLCOPT:"]
         for line in ignoreList {
-            if input.starts(with: line) {
+            if input.contains(line) {
                 return true
             }
         }
