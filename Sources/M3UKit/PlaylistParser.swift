@@ -75,7 +75,7 @@ public final class PlaylistParser {
                 return
             }
             
-            if !self.isIgnorableLine(line) {
+//            if !self.isIgnorableLine(line) {
                 if self.isInfoLine(line) {
                     lastMetadataLine = line
                 } else if self.isSessionLine(line) {
@@ -96,7 +96,7 @@ public final class PlaylistParser {
                         stop = true
                     }
                 }
-            }
+//            }
             
             lineNumber += 1
         }
@@ -244,7 +244,7 @@ public final class PlaylistParser {
     internal func isIgnorableLine(_ input: String) -> Bool {
         let ignoreList = ["#EXTGRP:", "#EXTVLCOPT:"]
         for line in ignoreList {
-            if input.contains(line) {
+            if input.starts(with: line) {
                 return true
             }
         }
@@ -252,7 +252,9 @@ public final class PlaylistParser {
     }
     
     internal func isSessionLine(_ input: String) -> Bool {
-        return input.starts(with: "#EXT-X-SESSION-DATA:")
+        return input.starts(with: "#EXT-X-SESSION-DATA:") ||
+        input.starts(with: "#EXTGRP:") ||
+        input.starts(with: "#EXTVLCOPT:")
     }
     
     internal func extractDuration(line: Int, rawString: String) throws -> Int {
