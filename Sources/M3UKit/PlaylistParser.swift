@@ -79,7 +79,7 @@ public final class PlaylistParser {
                 if self.isInfoLine(line) {
                     lastMetadataLine = line
                 } else if self.isSessionLine(line) {
-                    lineNumber += 1
+//                    lineNumber += 1
                 } else if let url = URL(string: line) {
                     lastURL = url
                 }
